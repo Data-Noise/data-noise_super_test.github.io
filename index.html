@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+    <div class="render">
+        <form id="postForm">
+            <input type="text" placeholder="text" name="text" value="">
+            <input type="submit">
+            <a id="out">TEXT TEXT TEXT</a>
+        </form>
+
+        
+    </div>
+
+    <script>
+        postForm.onsubmit = async (e) => {
+            e.preventDefault();
+
+            let form_data = {}
+
+            var form = document.querySelector('form');
+            var formData = new FormData(form);
+            formData.forEach(function(value, key){
+                form_data[key] = value;
+            });
+
+            let response = await fetch('http://localhost:5000/show_me_shit', {
+                method: "post",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(form_data)
+            });
+
+            let result = await response.text();
+
+            document.getElementById('out').innerText = result
+        };
+    </script>
+
+    <style>
+        .render {
+            height: 100%;
+            width: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            flex-direction: column;
+
+            justify-content: space-around;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-align: center;
+            color: white;
+        }
+
+        form input {
+            margin-bottom: 1em;
+        }
+
+        body, html {
+            background: #2b2b2b;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</body>
+</html>
